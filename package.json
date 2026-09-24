@@ -1,0 +1,29 @@
+{
+  "name": "cse340--web-back-development",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/remdeveloper15/CSE340--Web-Back-Development#readme",
+  "bugs": {
+    "url": "https://github.com/remdeveloper15/CSE340--Web-Back-Development/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remdeveloper15/CSE340--Web-Back-Development.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
