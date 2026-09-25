@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection} from './src/models/db.js'; 
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllProjects } from './src/models/project.js';
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -36,9 +37,13 @@ app.get('/', (req, res) => {
   res.render('home', { title });
 });
 
-app.get('/projects', (req, res) => {
-  res.render('projects', { title: 'Projects' });
-});   
+app.get('/projects', async (req, res) => {
+    const projects = await getAllProjects();
+    console.log(projects); // Esto verificará que la conexión y el JOIN funcionan
+    
+    const title = 'Service Projects';
+    res.render('projects', { title, projects });
+});
 
 app.get('/organizations', async (req, res) => {
     const organizations = await getAllOrganizations();

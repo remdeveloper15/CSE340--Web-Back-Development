@@ -1,15 +1,19 @@
-
 <%- include('partials/header') %>
-<main>
-    <h1>
-        <%= title %>
-    </h1>
-    <h2>
-        About Our Projects
-    </h2>
-    <p>
-        Our projects are designed to make a positive impact in our community and beyond. We focus on sustainability, education, and community service to create meaningful change.
-    </p>
-    <img class="main-log" src="images/cse340-service-network.png" alt="CSE 340 Service Network Logo">   
-</main>
+    <main>
+        <h1><%= title %></h1>
+        <h2>About Our Projects</h2>
+        
+        <ul>
+            <% projects.forEach(project => { %>
+                <% 
+                    // Convertimos la fecha de la base de datos a un formato amigable
+                    const dateObj = new Date(project.project_date);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }); 
+                %>
+                <li>
+                    <strong><%= formattedDate %>:</strong> <%= project.title %> (<%= project.organization_name %>)
+                </li>
+            <% }); %>
+        </ul>
+    </main>
 <%- include('partials/footer') %>
