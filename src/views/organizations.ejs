@@ -1,15 +1,17 @@
-
 <%- include('partials/header') %>
-<main>
-    <h1>
-        <%= title %>
-    </h1>
-    <h2>
-        About Our Organizations
-    </h2>
-    <p>
-        Our organization is dedicated to providing excellent services and support to our community.
-    </p>
-    <img class="main-log" src="images/cse340-service-network.png" alt="CSE 340 Service Network Logo">
-</main>
+    <main>
+        <h1><%= title %></h1>
+        
+        <p>Here are a few of our partner organizations:</p>
+        <ul>
+            <% organizations.forEach(organization => { %>
+                <li>
+                    <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %> logo">
+                    <strong><%= organization.name %></strong>: <%= organization.contact_email %>
+                    <br>
+                    <span><%= organization.description %></span>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
 <%- include('partials/footer') %>
