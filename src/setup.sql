@@ -51,3 +51,42 @@ VALUES
 (3, 'Senior Center Social', 'Hosting a game night for the elderly.', 'Silver Years Home', '2026-10-26'),
 (3, 'Winter Coat Drive', 'Collecting and sorting warm coats.', 'UnityServe Hub', '2026-11-02'),
 (3, 'Park Trail Maintenance', 'Clearing overgrown branches on walking paths.', 'Valley Trail', '2026-11-09');
+
+-- Creating the table
+CREATE TABLE public.category (
+	category_id SERIAL PRIMARY KEY,
+	category_name VARCHAR(100) NOT NULL
+);
+
+-- Creating the intermediate table
+CREATE TABLE public.project_category (
+	project_id INTEGER NOT NULL,
+	category_id INTEGER NOT NULL,
+	CONSTRAINT fk_service_project
+		FOREIGN KEY (project_id)
+		REFERENCES public.service_project(project_id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_category
+		FOREIGN KEY (category_id)
+		REFERENCES public.category(category_id)
+		ON DELETE CASCADE,
+	PRIMARY KEY (project_id, category_id)
+);
+
+-- Inserting categories 
+INSERT INTO public.category (category_name) VALUES
+('Education & Mentorship'),
+('Environmental & Cleanup'),
+('Community Building & Infrastructure'),
+('Health & Support Services=');
+
+-- Associating projects with categories
+INSERT INTO public.project_category (project_id, category_id) VALUES
+(1, 3),  -- Community Center Renovation -> Community Building
+(2, 3),  -- Playground Build -> Community Building
+(5, 1),  -- School Paint Job -> Education
+(6, 2),  -- Community Garden Planting -> Environmental
+(8, 1),  -- Composting Workshop -> Education
+(11, 2), -- Beach Cleanup -> Environmental
+(12, 4), -- Food Bank Sorting -> Health & Support
+(13, 4); -- Senior Center Social -> Health & Support

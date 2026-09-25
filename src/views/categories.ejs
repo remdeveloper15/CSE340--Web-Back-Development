@@ -1,26 +1,20 @@
+<%- include('partials/header') %> 
 
-<%- include('partials/header') %>
 <main>
-    <h1><%= title %></h1>
+    <h1>Project Categories</h1>
     
-    <h2>
-        Service Project Categories
-    </h2>
-    <ul>
-        <li>
-            Environmental
-        </li>
-        <li>
-            Educational
-        </li>
-        <li>
-            Community Service
-        </li>
-        <li>
-            Health and Wellness
-        </li>
-    </ul>
-    
-    <img class="main-log" src="images/cse340-service-network.png" alt="CSE 340 Service Network Logo">
+    <% if (categories && categories.length > 0) { %>
+        <ul class="category-list">
+            <!-- Iterate over each category that came from server.js -->
+            <% categories.forEach(function(category) { %>
+                <li>
+                    <%= category.category_name %>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No categories found in the database.</p>
+    <% } %>
 </main>
-<%- include('partials/footer') %>
+
+<%- include('partials/footer') %> 
