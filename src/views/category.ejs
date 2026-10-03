@@ -1,7 +1,12 @@
 <%- include('partials/header') %>
 <main>
     <!-- Muestra el nombre de la categoría -->
-    <h1><%= category.category_name %></h1>
+    <h1>
+        <%= category.category_name %>
+    </h1>
+    <a href="/edit-category/<%= category.category_id %>">
+        Edit Category
+    </a>
     
     <h2>Service Projects in this Category:</h2>
     <ul>

@@ -25,3 +25,18 @@
             </li>
         </ul>
     </nav>
+<div class="flash-messages-container">
+    <!-- Validamos si "flash" existe antes de usarlo -->
+    <% const messages = (typeof flash !== 'undefined') ? flash() : {}; %>
+    
+    <% Object.keys(messages).forEach(type => { %>
+        <!-- Aseguramos que el tipo exista y tenga elementos -->
+        <% if (messages[type] && messages[type].length > 0) { %>
+            <div class="alert <%= type %>">
+                <% messages[type].forEach(msg => { %>
+                    <p><%= msg %></p>
+                <% }); %>
+            </div>
+        <% } %>
+    <% }); %>
+</div>

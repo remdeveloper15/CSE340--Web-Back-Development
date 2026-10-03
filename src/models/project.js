@@ -1,7 +1,9 @@
-//Import
+//---------------------------------------------------------------IMPORTS----------------------------------------------------------------//
+
 import db from './db.js';
 
-//Functions
+//---------------------------------------------------------------FUNCTIONS----------------------------------------------------------------//
+//funciton to get all projects
 const getAllProjects = async () => {
     const query = `
         SELECT 
@@ -24,6 +26,7 @@ const getAllProjects = async () => {
     }
 };
 
+//function to get projects by organization id
 const getProjectsByOrganizationId = async (organizationId) => {
       const query = `
         SELECT
@@ -44,6 +47,7 @@ const getProjectsByOrganizationId = async (organizationId) => {
       return result.rows;
 };
 
+//function to get upcoming projects
 const getUpcomingProjects = async (numberOfProjects) => {
     const query = `
         SELECT p.project_id, p.title, p.description, p.project_date AS date, p.location, p.organization_id, o.name AS organization_name
@@ -57,6 +61,7 @@ const getUpcomingProjects = async (numberOfProjects) => {
     return result.rows;
 };
 
+//function to get project details by id
 const getProjectDetails = async (id) => {
     const query = `
         SELECT p.project_id, p.title, p.description, p.project_date AS date, p.location, p.organization_id, o.name AS organization_name
@@ -69,5 +74,46 @@ const getProjectDetails = async (id) => {
     return result.rows.length > 0 ? result.rows[0] : null;
 };
 
-//Export
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails };
+//functions to create a new project
+const createProject = async (title, description, location, projectDate, organizationId) => {
+    const query = `
+        INSERT INTO service_project (title, description, location, project_date, organization_id)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING project_id;
+    `;
+
+    const queryParams = [title, description, location, projectDate, organizationId];
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error('Project not created');
+    }
+    return result.rows[0].project_id;
+};
+
+//function to update a project
+const updateProject = async (id, title, description, location, projectDate, organizationId) => {
+    const query = `
+        UPDATE service_project
+        SET title = $1, description = $2, location = $3, project_date = $4, organization_id = $5
+        WHERE project_id = $6
+        RETURNING *;
+    `;
+    const queryParams = [title, description, location, projectDate, organizationId, id];
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to update project');
+    }
+    return result.rows[0];
+};
+
+//---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
+
+export { 
+    getAllProjects,
+    getProjectsByOrganizationId, getUpcomingProjects, 
+    getProjectDetails, 
+    createProject,
+    updateProject
+};
