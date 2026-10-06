@@ -2,7 +2,10 @@
 
 import express from 'express'
 
-import {showHomePage} from './controllers/index.js';
+import {
+    showHomePage
+} from './controllers/index.js';
+
 import {
     showProjectsPage, 
     showProjectDetailsPage,
@@ -24,7 +27,10 @@ import {
     processEditCategoryForm,
     categoryValidation
 } from './controllers/categories.js';
-import {testErrorPage} from './controllers/errors.js';
+
+import {
+    testErrorPage
+} from './controllers/errors.js';
 
 import { 
     showOrganizationsPage,
@@ -33,6 +39,11 @@ import {
     showEditOrganizationPage,
     processEditOrganizationForm
 } from './controllers/organizations.js';
+
+import { 
+    showUserRegistrationForm, 
+    processUserRegistrationForm
+} from './controllers/users.js';
 
 //---------------------------------------------------------------ROUTES----------------------------------------------------------------//
 
@@ -83,6 +94,9 @@ router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 router.get('/edit-project/:id', showEditProjectForm);
 router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 
+//Routes for new users
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
 
 //---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
 
