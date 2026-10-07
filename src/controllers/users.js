@@ -1,14 +1,19 @@
 //---------------------------------------------------------------IMPORTS----------------------------------------------------------------//
 
 import bcrypt from 'bcrypt';
-import { createUser } from '../models/users.js';
+import { 
+    createUser,
+    authenticateUser
+} from '../models/users.js';
 
 //---------------------------------------------------------------FUNCTIONS----------------------------------------------------------------//
 
+//Function to Show User Registration Form
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
 
+//Function to Process the Registration Form
 const processUserRegistrationForm = async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -29,6 +34,59 @@ const processUserRegistrationForm = async (req, res) => {
     }
 };
 
+//Function to Show the Empty Login Form
+const showLoginForm = (req, res) => {
+    res.render('login', { title: 'Login' });
+};
+
+//Function to Process the Login Form
+const processLoginForm = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await authenticateUser(email, password);
+        
+        if (user) {
+
+            // Save the login user data in its browser
+            req.session.user = user;
+            req.flash('success', 'Login successful!');
+
+            if (res.locals.NODE_ENV === 'development') {
+                console.log('User logged in:', user);
+            }
+
+            res.redirect('/');
+        } else {
+            req.flash('error', 'Invalid email or password.');
+            res.redirect('/login');
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        req.flash('error', 'An error occurred during login. Please try again.');
+        res.redirect('/login');
+    }
+};
+
+//Function to Porcess the Logout Session
+const processLogout = async (req, res) => {
+    if (req.session.user) {
+
+        // Delete user data from the browser
+        delete req.session.user; 
+        
+    }
+
+    req.flash('success', 'Logout successful!');
+    res.redirect('/login');
+};
+
 //---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
 
-export { showUserRegistrationForm, processUserRegistrationForm };
+export { 
+    showUserRegistrationForm,
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout
+};

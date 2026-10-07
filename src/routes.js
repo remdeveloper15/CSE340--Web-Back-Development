@@ -42,7 +42,10 @@ import {
 
 import { 
     showUserRegistrationForm, 
-    processUserRegistrationForm
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout
 } from './controllers/users.js';
 
 //---------------------------------------------------------------ROUTES----------------------------------------------------------------//
@@ -97,6 +100,11 @@ router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 //Routes for new users
 router.get('/register', showUserRegistrationForm);
 router.post('/register', processUserRegistrationForm);
+
+//Routes for Login and Logout
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
 
 //---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
 

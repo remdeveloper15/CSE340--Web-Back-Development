@@ -43,12 +43,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to make NODE_ENV available to all templates
-app.use((req, res, next) => {
-    res.locals.NODE_ENV = NODE_ENV;
-    next();
-});
-
 // Allow Express to receive and process common POST data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -56,6 +50,7 @@ app.use(express.json());
 //Middleware to handle sessions
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
+//Inializate the session
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
@@ -65,6 +60,19 @@ app.use(session({
 
 // Middleware to make flash messages available to all templates
 app.use(flash);
+
+// Middleware to make NODE_ENV available to all templates
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = false;
+
+    // If a user exists in the session, change the value to true
+    if (req.session && req.session.user) {
+        res.locals.isLoggedIn = true;
+    }
+
+    res.locals.NODE_ENV = NODE_ENV;
+    next();
+});
 
 //--------------------------------------------------------------ROUTES----------------------------------------------------------------//
 
