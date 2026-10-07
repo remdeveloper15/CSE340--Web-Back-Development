@@ -50,7 +50,8 @@ import {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showUsersPage
 } from './controllers/users.js';
 
 //---------------------------------------------------------------ROUTES----------------------------------------------------------------//
@@ -99,23 +100,26 @@ router.post('/new-organization', requireRole('admin'), organizationValidation, p
 router.get('/edit-organization/:id', requireRole('admin'), showEditOrganizationPage);
 router.post('/edit-organization/:id', requireRole('admin'), organizationValidation, processEditOrganizationForm);
 
-// --- Proyectos ---
+// --- Projects + ---
 router.get('/new-project', requireRole('admin'), showNewProjectForm);
 router.post('/new-project', requireRole('admin'), projectValidation, processNewProjectForm);
 
 router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
 router.post('/edit-project/:id', requireRole('admin'), projectValidation, processEditProjectForm);
 
-// --- Categorías ---
+// --- Categories ---
 router.get('/new-category', requireRole('admin'), showNewCategoryPage);
 router.post('/new-category', requireRole('admin'), categoryValidation, processNewCategoryForm);
 
 router.get('/edit-category/:id', requireRole('admin'), showEditCategoryPage);
 router.post('/edit-category/:id', requireRole('admin'), categoryValidation, processEditCategoryForm);
 
-// --- Asignar Categorías a Proyectos ---
+// --- Assign Categories to Projects ---
 router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', requireRole('admin'), processAssignCategoriesForm);
+
+// --- Users ---
+router.get('/users', requireRole('admin'), showUsersPage);
 
 //---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
 

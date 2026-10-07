@@ -3,7 +3,8 @@
 import bcrypt from 'bcrypt';
 import { 
     createUser,
-    authenticateUser
+    authenticateUser,
+    getAllUsers
 } from '../models/users.js';
 
 //---------------------------------------------------------------FUNCTIONS----------------------------------------------------------------//
@@ -93,6 +94,21 @@ const showDashboard = (req, res) => {
     });
 };
 
+// Function to show the Users list page (Admin only)
+const showUsersPage = async (req, res) => {
+    try {
+        const usersList = await getAllUsers();
+        res.render('users', { 
+            title: 'Registered Users',
+            usersList: usersList
+        });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        req.flash('error', 'Could not load the users list.');
+        res.redirect('/dashboard');
+    }
+};
+
 //---------------------------------------------------------------MIDDLEWARES----------------------------------------------------------------//
 
 // Middleware to protect routes
@@ -139,5 +155,6 @@ export {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showUsersPage
 };
