@@ -11,9 +11,11 @@
         Description: <%= organizationDetails.description %>
     </p>
     <p>
+        <% if (user && user.role_name === 'admin') { %>
         <a href="/edit-organization/<%= organizationDetails.organization_id %>" class="button">
             Edit Organization
         </a>
+        <% } %>
     </p>
 
     <h3>

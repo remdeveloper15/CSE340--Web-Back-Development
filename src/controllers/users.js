@@ -56,7 +56,7 @@ const processLoginForm = async (req, res) => {
                 console.log('User logged in:', user);
             }
 
-            res.redirect('/');
+            res.redirect('/dashboard');
         } else {
             req.flash('error', 'Invalid email or password.');
             res.redirect('/login');
@@ -81,6 +81,54 @@ const processLogout = async (req, res) => {
     res.redirect('/login');
 };
 
+// Function to show the Dashboard
+const showDashboard = (req, res) => {
+
+    //We get data from the memory
+    const user = req.session.user; 
+    res.render('dashboard', { 
+        title: 'Dashboard',
+        name: user.name,
+        email: user.email
+    });
+};
+
+//---------------------------------------------------------------MIDDLEWARES----------------------------------------------------------------//
+
+// Middleware to protect routes
+const requireLogin = (req, res, next) => {
+
+    // If there is no open session, it come back to the login page
+    if (!req.session || !req.session.user) {
+        req.flash('error', 'You must be logged in to access that page.');
+        return res.redirect('/login');
+    }
+
+    // If is logged, pass
+    next();
+};
+
+//Middleware to authorization
+const requireRole = (role) => {
+    return (req, res, next) => {
+
+        // Check if it is loged
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        // Check the role
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/');
+        }
+
+        // Pass
+        next();
+    };
+};
+
 //---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
 
 export { 
@@ -88,5 +136,8 @@ export {
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
-    processLogout
+    processLogout,
+    requireLogin,
+    showDashboard,
+    requireRole
 };
