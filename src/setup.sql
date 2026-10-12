@@ -118,3 +118,10 @@ CREATE TABLE users (
     role_id INTEGER REFERENCES roles(role_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- WEEK 06 --
+CREATE TABLE porject_volunteers (
+    user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+    project_id INT REFERENCES service_project*(project_id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, project_id)
+);

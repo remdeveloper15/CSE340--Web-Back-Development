@@ -6,6 +6,9 @@ import {
     authenticateUser,
     getAllUsers
 } from '../models/users.js';
+import {
+    getUserVolunteeredProjects
+} from '../models/project.js';
 
 //---------------------------------------------------------------FUNCTIONS----------------------------------------------------------------//
 
@@ -83,15 +86,25 @@ const processLogout = async (req, res) => {
 };
 
 // Function to show the Dashboard
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
+    const user = req.session.user;
 
-    //We get data from the memory
-    const user = req.session.user; 
-    res.render('dashboard', { 
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email
-    });
+    try {
+
+        //Look for the projects in which the user is a volunteer
+        const volunteerProjects = await getUserVolunteeredProjects(user.user_id);
+
+        res.render('dashboard', { 
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            volunteeredProjects: volunteerProjects
+        });
+    } catch (error) {
+    console.error('Error loading dashboard data:', error);
+    req.flash('error', 'Could not load your dashboard completely.');
+    res.render('dashboard', { title: 'Dashboard', name: user.name, email: user.email, volunteeredProjects: [] });
+    }
 };
 
 // Function to show the Users list page (Admin only)

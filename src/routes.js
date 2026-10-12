@@ -13,7 +13,9 @@ import {
     processNewProjectForm,
     projectValidation,
     showEditProjectForm,
-    processEditProjectForm
+    processEditProjectForm,
+    processAddVolunteer,
+    processRemoveVolunteer
 } from './controllers/projects.js';
 
 import {
@@ -88,6 +90,10 @@ router.get('/logout', processLogout);
 // ==========================================
 router.get('/dashboard', requireLogin, showDashboard);
 
+// --- Volunteer Routes ---
+router.post('/project/:id/volunteer', requireLogin, processAddVolunteer);
+router.post('/project/:id/unvolunteer', requireLogin, processRemoveVolunteer);
+
 
 // ==========================================
 // ADMIN ROUTES
@@ -100,7 +106,7 @@ router.post('/new-organization', requireRole('admin'), organizationValidation, p
 router.get('/edit-organization/:id', requireRole('admin'), showEditOrganizationPage);
 router.post('/edit-organization/:id', requireRole('admin'), organizationValidation, processEditOrganizationForm);
 
-// --- Projects + ---
+// --- Projects  ---
 router.get('/new-project', requireRole('admin'), showNewProjectForm);
 router.post('/new-project', requireRole('admin'), projectValidation, processNewProjectForm);
 
@@ -120,6 +126,7 @@ router.post('/assign-categories/:projectId', requireRole('admin'), processAssign
 
 // --- Users ---
 router.get('/users', requireRole('admin'), showUsersPage);
+
 
 //---------------------------------------------------------------EXPORTS----------------------------------------------------------------//
 

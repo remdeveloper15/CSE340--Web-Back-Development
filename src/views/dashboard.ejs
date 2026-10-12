@@ -31,5 +31,36 @@
             </p>
         </div>
     <% } %>
+
+    <hr>
+    
+    <div class="my-projects" style="margin-top: 2rem;">
+        <h3>
+            My Volunteered Projects
+        </h3>
+        
+        <% if (volunteeredProjects && volunteeredProjects.length > 0) { %>
+            <ul>
+                <% volunteeredProjects.forEach(project => { %>
+                    <li style="margin-bottom: 10px;">
+                        <a href="/project/<%= project.project_id %>">
+                            <%= project.title %>
+                        </a> 
+                        (Hosted by: <%= project.organization_name %>)
+                        
+                        <form action="/project/<%= project.project_id %>/unvolunteer" method="POST" style="display:inline; margin-left: 10px;">
+                            <button type="submit" class="button" style="padding: 2px 8px; font-size: 0.8rem;">
+                                Remove
+                            </button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>
+                You haven't signed up to volunteer for any projects yet.
+            </p>
+        <% } %>
+    </div>
 </main>
 <%- include('partials/footer') %>
