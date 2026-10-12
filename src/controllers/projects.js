@@ -74,10 +74,10 @@ const processRemoveVolunteer = async (req, res) => {
         await removeVolunteer(userId, projectId);
         req.flash('success', 'You have been removed as a volunteer.');
         // The user will be redirect
-        res.redirect('back'); 
+        res.redirect('/dashboard'); 
     } catch (error) {
         req.flash('error', 'Could not remove you as a volunteer.');
-        res.redirect('back');
+        res.redirect('/dashboard');
     }
 };
 
